@@ -1,0 +1,4 @@
+; $Id: readonlymode.info,v 1.2 2010/06/21 20:07:00 barisw Exp $
+name = "User ReadOnly"
+description = "Module for Drupal that allows you to define users that can not submit any form."
+core = "6.x"
