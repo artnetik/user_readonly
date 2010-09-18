@@ -1,23 +1,68 @@
 <?php 
 /**
-* Implementation of hook_form_alter().
-* Permit posting of content
-*/
-function userreadonlymode_form_alter(&$form, $form_state, $form_id) {
+ * Implementation of hook_form_alter().
+ */
+function user_readonly_form_alter(&$form, $form_state, $form_id) {
   global $user;
-  if ($user->uid == 11231)
-  {
-    $form['#validate'][] = 'userreadonlymode_form_validate';
+  $readonly_list = variable_get('user_readonly_list', array());
+  if (array_key_exists($user->uid, $readonly_list)) {
+    $form['#validate'][] = 'user_readonly_form_validate';
   }
   return $form;
 }
 
 /**
-* Implementation of hook_form_FORM_ID_validate().
-* path_admin_form
-*/
-function userreadonlymode_form_validate(&$form, $form_state) {
-  global $user;
-  if ($user->uid == 112131)
-    form_set_error('readonlymode', t("You are not able to change any data."));
+ * Implementation of hook_form_FORM_ID_validate().
+ */
+function user_readonly_form_validate(&$form, $form_state) {
+  form_set_error('readonlymode', t("You are not allowed to change any data."));
 }
+
+function user_readonly_settings() {
+  if (function_exists("jquery_ui_get_version")) {
+    $ver = jquery_ui_get_version();
+    if (strstr($ver, '1.7.')) {
+      jquery_ui_add('ui.sortable');
+      drupal_add_js(drupal_get_path('module', 'user_readonly') . '/js/ui.multiselect.js');
+      drupal_add_js('$(document).ready(function (context) {
+          $(".multiselect").multiselect();
+      });', 'inline');
+    }
+  }
+  
+  $choice = new stdClass();
+  $choice->option = array(0 => t('Anonymous'));
+  $options[] = $choice;
+    
+  $result = db_query('SELECT uid, name FROM {users} WHERE uid > 1');
+  while ($user = db_fetch_array($result)) {
+    $choice = new stdClass();
+    $choice->option = array($user['uid'] => $user['name']);
+    $options[] = $choice;
+  }
+
+  $form['user_readonly_list'] = array(
+    '#attributes' => array('class' => 'multiselect'),
+    '#type' => 'select',
+    '#title' => t('Read-only users'),
+    '#default_value' => variable_get('user_readonly_list', array()),
+    '#options' => $options,
+    '#size' => 20,
+    '#multiple' => TRUE,
+    '#description' => t('Select which users have read-only access.'),
+  );
+  return system_settings_form($form);
+}
+
+function user_readonly_menu() {
+  $items['admin/user/user_readonly'] = array(
+    'title' => 'ReadOnly user',
+    'description' => t('Select which users have read-only access.'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('user_readonly_settings'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+   return $items;
+}
+
