@@ -1,4 +1,7 @@
 ; $Id: $
 name = "User ReadOnly"
-description = "Module for Drupal that allows you to define users that can not submit any form."
+description = "Drupal module that allows you to define users that can not submit any form."
+version = "6.x-1.0"
 core = "6.x"
+project status url = http://code.artnetik.si/fserver
+project = user_readonly
