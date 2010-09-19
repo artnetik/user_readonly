@@ -18,10 +18,11 @@ Bug reports, feature suggestions and latest developments:
 -- INSTALLATION --
 
 * Install as usual, see http://drupal.org/node/70151 for further information.
-
+* For a nicer multiselect widget consider using Jquery UI 1.7.x
 
 -- CONFIGURATION --
 
+* On the admin/user/user_readonly configuration form, select which users only have read-only access.
 
 
 -- CONTACT --
@@ -30,3 +31,6 @@ Bug reports, feature suggestions and latest developments:
 
 This project has been sponsored by:
   Artnetik - http://www.artnetik.si
+  
+Thanks to:
+* Michael Aufreiter and Yanick Rochon for the super-nice multiselect widget (http://www.quasipartikel.at/multiselect/)

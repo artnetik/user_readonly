@@ -22,6 +22,8 @@ function user_readonly_settings() {
   if (function_exists("jquery_ui_get_version")) {
     $ver = jquery_ui_get_version();
     if (strstr($ver, '1.7.')) {
+      drupal_add_css(drupal_get_path('module', 'jquery_ui') . '/jquery.ui/themes/base/ui.all.css');
+      drupal_add_css(drupal_get_path('module', 'user_readonly') . '/css/ui.multiselect.css');
       jquery_ui_add('ui.sortable');
       drupal_add_js(drupal_get_path('module', 'user_readonly') . '/js/ui.multiselect.js');
       drupal_add_js('$(document).ready(function (context) {
