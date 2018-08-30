@@ -1,5 +1,5 @@
 
-* User ReadOnly module for Drupal 6.x
+# User ReadOnly module for Drupal 6.x
 
 For a full description visit the project page:
   http://code.artnetik.si/content/user-readonly
